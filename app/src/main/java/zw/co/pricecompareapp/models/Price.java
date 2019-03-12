@@ -1,4 +1,4 @@
-package zw.co.pricecompareapp;
+package zw.co.pricecompareapp.models;
 
 public class Price {
     String shopname;

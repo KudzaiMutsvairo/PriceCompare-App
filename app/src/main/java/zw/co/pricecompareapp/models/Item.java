@@ -1,8 +1,8 @@
-package zw.co.pricecompareapp;
+package zw.co.pricecompareapp.models;
 
 import java.util.ArrayList;
 
-public class Item {
+public class Item implements java.io.Serializable {
     String name;
     ArrayList<Price> prices;
 
