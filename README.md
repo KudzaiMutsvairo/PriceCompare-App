@@ -10,3 +10,7 @@ Thats all you need and if you feel you need to use text based search, it caters 
 <br>
 <h3>Screenshots</h3>
 <img src="https://github.com/KudzaiMutsvairo/PriceCompare-App/raw/master/screenshots/image%201.jpeg" width="30%" height="30%"/>
+&nbsp; &nbsp; &nbsp;
+<img src="https://github.com/KudzaiMutsvairo/PriceCompare-App/raw/master/screenshots/image%202.jpeg" width="30%" height="30%"/>
+&nbsp; &nbsp; &nbsp;
+<img src="https://github.com/KudzaiMutsvairo/PriceCompare-App/raw/master/screenshots/image%203.jpeg" width="30%" height="30%"/>
