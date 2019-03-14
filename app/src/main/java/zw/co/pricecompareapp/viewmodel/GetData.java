@@ -39,10 +39,10 @@ public class GetData {
     Bitmap image;
     String imageString;
     String imageData;
-    private Context context;
+    public Context context;
     Item item;
 
-    GetData(Context cntxt){
+    public GetData(Context cntxt){
         this.context = cntxt;
     }
 

@@ -11,14 +11,19 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.camerakit.CameraKitView;
 
 import java.io.File;
 import java.io.FileOutputStream;
 
+import zw.co.pricecompareapp.models.Item;
+import zw.co.pricecompareapp.viewmodel.GetData;
+
 public class FragmentCamera extends Fragment {
     private CameraKitView cameraKitView;
+    GetData getData;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -76,6 +81,13 @@ public class FragmentCamera extends Fragment {
                     FileOutputStream outputStream = new FileOutputStream(savedPhoto.getPath());
                     outputStream.write(photo);
                     outputStream.close();
+                    //call recognise function here
+                    getData = new GetData(getActivity());
+                    Item data = null;
+                    data = getData.uploaduserimage();
+                    if(data != null){
+                        Toast.makeText(getActivity(), "Upload returned response", Toast.LENGTH_SHORT).show();
+                    }
                 }catch (java.io.IOException e){
                     e.printStackTrace();
                 }
