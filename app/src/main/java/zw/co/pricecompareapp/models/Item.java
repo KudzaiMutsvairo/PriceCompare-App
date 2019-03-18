@@ -2,23 +2,41 @@ package zw.co.pricecompareapp.models;
 
 import java.util.ArrayList;
 
-public class Item implements java.io.Serializable {
-    String name;
-    ArrayList<Price> prices;
+public class Item {
+    public String productName;
+    public String shopName;
+    public String shopAddress;
+    public Double price;
 
-    public void setName(String name) {
-        this.name = name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setPrices(ArrayList prices) {
-        this.prices = prices;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public String getName() {
-        return name;
+    public String getShopName() {
+        return shopName;
     }
 
-    public ArrayList<Price> getPrices() {
-        return prices;
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+
+    public String getShopAddress() {
+        return shopAddress;
+    }
+
+    public void setShopAddress(String shopAddress) {
+        this.shopAddress = shopAddress;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }

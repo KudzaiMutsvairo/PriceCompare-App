@@ -12,6 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import zw.co.pricecompareapp.models.Item;
+import zw.co.pricecompareapp.viewmodel.GetData;
+
 import com.camerakit.CameraKitView;
 
 import java.io.File;
@@ -19,24 +22,19 @@ import java.io.FileOutputStream;
 
 public class FragmentCamera extends Fragment {
     private CameraKitView cameraKitView;
+    GetData getData;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_camera, container, false);
         //isStoragePermissionGranted();
         cameraKitView = (CameraKitView)view.findViewById(R.id.camera);
+        getData = new GetData(getContext());
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fabCheck);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 captureImage();
-                FragmentManager fragmentManager2 = getFragmentManager();
-                FragmentTransaction ft2 = fragmentManager2.beginTransaction();
-                FragmentResults frag2 = new FragmentResults();
-                ft2.addToBackStack("xyz");
-                ft2.hide(FragmentCamera.this);
-                ft2.add(R.id.frameMain, frag2 );
-                ft2.commit();
             }
         });
         return view;
@@ -71,13 +69,29 @@ public class FragmentCamera extends Fragment {
         cameraKitView.captureImage(new CameraKitView.ImageCallback() {
             @Override
             public void onImage(CameraKitView cameraKitView, final byte[] photo) {
+                boolean flag = false;
+
                 File savedPhoto = new File(Environment.getExternalStorageDirectory(), "pchk.jpg");
                 try{
                     FileOutputStream outputStream = new FileOutputStream(savedPhoto.getPath());
                     outputStream.write(photo);
                     outputStream.close();
+                    flag = true;
                 }catch (java.io.IOException e){
                     e.printStackTrace();
+                }
+                if(flag){
+                    Item item = getData.uploaduserimage();
+                    //start new fragment and send serialised object to it
+                    /*
+                    FragmentManager fragmentManager2 = getFragmentManager();
+                    FragmentTransaction ft2 = fragmentManager2.beginTransaction();
+                    FragmentResult frag2 = new FragmentResult();
+                    ft2.addToBackStack("xyz");
+                    ft2.hide(FragmentCamera.this);
+                    ft2.add(R.id.frameMain, frag2 );
+                    ft2.commit();
+                    */
                 }
             }
         });

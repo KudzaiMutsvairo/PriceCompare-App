@@ -4,9 +4,11 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -27,6 +29,7 @@ import java.util.Map;
 
 import zw.co.pricecompareapp.MainActivity;
 import zw.co.pricecompareapp.R;
+import zw.co.pricecompareapp.models.DataReceived;
 import zw.co.pricecompareapp.models.Item;
 
 public class GetData {
@@ -40,53 +43,58 @@ public class GetData {
     String imageString;
     String imageData;
     private Context context;
-    Item item;
+    DataReceived dataReceived;
 
-    GetData(Context cntxt){
+    public GetData(Context cntxt){
         this.context = cntxt;
     }
 
-    public Item uploaduserimage(){
-        item=null;
-        requestQueue = Volley.newRequestQueue(context);
-        progressDialog = ProgressDialog.show(context,"Please Wait...","Processing image...");
+    public DataReceived uploaduserimage(){
+        dataReceived=null;
+        try {
+            requestQueue = Volley.newRequestQueue(context);
+            progressDialog = ProgressDialog.show(context, "Please Wait...", "Processing image...");
 
-        Map<String,String> param = new HashMap<>();
-        //imageData =  imageToString(getImageBitMap());
-        if (imageData == null){
-            Log.v(TAG, "No image data: imageData is null");
-        }
-        param.put("image",imageData);
-        JSONObject parameters = new JSONObject(param);
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, serverURL,parameters, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                //convert response object to item object.
-                item = new Gson().fromJson(new Gson().toJson(response), Item.class);
-                progressDialog.dismiss();
-                progressDialog.cancel();
+            Map<String, String> param = new HashMap<>();
+            imageData = imageToString(getImageBitMap());
+            if (imageData == null) {
+                Log.v(TAG, "No image data: imageData is null");
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.i("priceCompare",""+error);
-                //txtView.setText("Cannot retrieve data: "+error);
-                Log.v(TAG, error.toString());
-                progressDialog.dismiss();
-                progressDialog.cancel();
-            }
-        });
+            param.put("image", imageData);
+            JSONObject parameters = new JSONObject(param);
 
-        requestQueue.add(jsonObjectRequest);
-        requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<JSONObject>() {
-            @Override
-            public void onRequestFinished(Request<JSONObject> request) {
-                if (progressDialog !=  null && progressDialog.isShowing())
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, serverURL, parameters, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    //convert response object to item object.
+                    Toast.makeText(context, response.toString(), Toast.LENGTH_SHORT).show();
+                    dataReceived = new Gson().fromJson(new Gson().toJson(response), DataReceived.class);
                     progressDialog.dismiss();
-            }
-        });
-        return item;
+                    progressDialog.cancel();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("priceCompare", "" + error);
+                    //txtView.setText("Cannot retrieve data: "+error);
+                    Log.v(TAG, error.toString());
+                    progressDialog.dismiss();
+                    progressDialog.cancel();
+                }
+            });
+
+            requestQueue.add(jsonObjectRequest);
+            requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<JSONObject>() {
+                @Override
+                public void onRequestFinished(Request<JSONObject> request) {
+                    if (progressDialog != null && progressDialog.isShowing())
+                        progressDialog.dismiss();
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return dataReceived;
     }
 
     private String imageToString(Bitmap bitmap){
@@ -118,6 +126,23 @@ public class GetData {
         }else {
             Log.d(TAG, "displayImage: File does not exist");
         }
+
+    }
+
+    Bitmap getImageBitMap(){
+        try {
+            File sd = Environment.getExternalStorageDirectory();
+            File imageFile = new File(sd + "/pchk.jpg");
+
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            image = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), bmOptions);
+            if(image == null) {
+                Log.v(TAG, "image object empty");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return image;
     }
 
 }
