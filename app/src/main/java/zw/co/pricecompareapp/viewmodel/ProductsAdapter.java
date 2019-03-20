@@ -33,9 +33,9 @@ public class ProductsAdapter extends ArrayAdapter<Item> {
         TextView tvSAddr = (TextView) convertView.findViewById(R.id.tvShopAddress);
         TextView tvPrice = (TextView) convertView.findViewById(R.id.tvPrice);
         // Populate the data into the template view using the data object
-        tvSName.setText(item.shopName);
-        tvSAddr.setText(item.shopAddress);
-        tvPrice.setText(item.price.toString());
+        tvSName.setText(item.getName());
+        tvSAddr.setText(item.getAddress());
+        tvPrice.setText(item.getPrice());
         // Return the completed view to render on screen
         return convertView;
     }

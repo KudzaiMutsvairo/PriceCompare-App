@@ -89,7 +89,7 @@ public class FragmentCamera extends Fragment {
                         //DataReceived dataReceived = getData.uploaduserimage();
                         OkHttpGetData okHttpGetData = new OkHttpGetData(getActivity());
                         DataReceived dataReceived = okHttpGetData.uploadOkHttp();
-                        if (dataReceived == null){
+                        if (dataReceived.getDescription() == null || dataReceived.getDescription() == "null"){
                             Toasty.error(getActivity(), "Error: Could not process image ", Toast.LENGTH_SHORT, true).show();
                         }else{
                             sendObject(dataReceived);

@@ -38,8 +38,14 @@ public class OkHttpGetData {
     String imageData = null;
     private Context context;
     DataReceived dataReceived = null;
+    String imagePaths;
 
     public OkHttpGetData(Context context) {
+        this.context = context;
+    }
+
+    public OkHttpGetData(Context context, String imagep) {
+        this.imagePaths = imagep;
         this.context = context;
     }
 
@@ -49,6 +55,7 @@ public class OkHttpGetData {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
             byte[] imageBytes = outputStream.toByteArray();
             imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+            Log.v(TAG, imageString);
             outputStream.close();
         }catch (Exception e){
             e.printStackTrace();
@@ -79,6 +86,22 @@ public class OkHttpGetData {
         try {
             File sd = Environment.getExternalStorageDirectory();
             File imageFile = new File(sd + "/pchk.jpg");
+
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            image = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), bmOptions);
+            if(image == null) {
+                Log.v(TAG, "image object empty");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return image;
+    }
+
+    Bitmap setImageBitMap(String p){
+        try {
+            File sd = Environment.getExternalStorageDirectory();
+            File imageFile = new File(p);
 
             BitmapFactory.Options bmOptions = new BitmapFactory.Options();
             image = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), bmOptions);
@@ -134,7 +157,68 @@ public class OkHttpGetData {
                 String mMessage = response.body().string();
                 Log.e(TAG, mMessage);
                 dataReceived = new Gson().fromJson(mMessage, DataReceived.class);
-                Log.e(TAG, dataReceived.getError());
+                if(dataReceived !=  null) {
+                    Log.e(TAG, dataReceived.getError());
+                }else {
+                    Log.e(TAG, "object is null");
+                }
+                progressDialog.dismiss();
+                progressDialog.cancel();
+            }
+        });
+        return dataReceived;
+    }
+
+
+    /************************************************************************/
+    public DataReceived uploadOkHttp2() throws IOException {
+
+        MediaType MEDIA_TYPE = MediaType.parse("application/json");
+        //String url = "https://cakeapi.trinitytuts.com/api/add";
+
+        OkHttpClient client = new OkHttpClient();
+
+        JSONObject postdata = new JSONObject();
+        progressDialog = ProgressDialog.show(context, "Please Wait...", "Processing image...");
+        imageData = imageToString(setImageBitMap(imagePaths));
+        try {
+            postdata.put("image", imageData);
+        } catch(JSONException e){
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        RequestBody body = RequestBody.create(MEDIA_TYPE, postdata.toString());
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .header("Accept", "application/json")
+                .header("Content-Type", "application/json")
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                String mMessage = e.getMessage().toString();
+                Log.w("failure Response", mMessage);
+                //call.cancel();
+                //TODO Make toast here to show error that network failed
+                progressDialog.dismiss();
+                progressDialog.cancel();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                String mMessage = response.body().string();
+                Log.e(TAG, mMessage);
+                dataReceived = new Gson().fromJson(mMessage, DataReceived.class);
+                if(dataReceived !=  null) {
+                    Log.e(TAG, dataReceived.getError());
+                }else {
+                    Log.e(TAG, "object is null");
+                }
                 progressDialog.dismiss();
                 progressDialog.cancel();
             }
