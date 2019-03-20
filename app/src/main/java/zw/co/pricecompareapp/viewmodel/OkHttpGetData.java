@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -37,7 +38,7 @@ public class OkHttpGetData {
     String imageString;
     String imageData = null;
     private Context context;
-    DataReceived dataReceived = null;
+    static DataReceived dataReceived = null;
     String imagePaths;
 
     public OkHttpGetData(Context context) {
@@ -196,7 +197,7 @@ public class OkHttpGetData {
                 .header("Accept", "application/json")
                 .header("Content-Type", "application/json")
                 .build();
-
+        final CountDownLatch countDownLatch = new CountDownLatch(1);
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -206,6 +207,7 @@ public class OkHttpGetData {
                 //TODO Make toast here to show error that network failed
                 progressDialog.dismiss();
                 progressDialog.cancel();
+                countDownLatch.countDown();
             }
 
             @Override
@@ -215,14 +217,22 @@ public class OkHttpGetData {
                 Log.e(TAG, mMessage);
                 dataReceived = new Gson().fromJson(mMessage, DataReceived.class);
                 if(dataReceived !=  null) {
+                    Log.e(TAG, dataReceived.getDescription());
                     Log.e(TAG, dataReceived.getError());
                 }else {
                     Log.e(TAG, "object is null");
                 }
                 progressDialog.dismiss();
                 progressDialog.cancel();
+                countDownLatch.countDown();
             }
+
         });
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return dataReceived;
     }
 

@@ -28,7 +28,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="White coffee mug"
+        android:textSize="15sp"
         />
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+
     <ListView
         android:id="@+id/lstProduct"
         android:layout_width="match_parent"

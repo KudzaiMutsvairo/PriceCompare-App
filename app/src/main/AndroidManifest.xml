@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Start"
-            android:label="Search">
+            android:label="PriceCompare"
+            android:theme="@style/AppThemeNoBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
