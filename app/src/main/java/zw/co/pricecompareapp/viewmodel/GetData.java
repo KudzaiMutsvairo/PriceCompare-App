@@ -15,15 +15,19 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,7 +45,7 @@ public class GetData {
 
     Bitmap image;
     String imageString;
-    String imageData;
+    String imageData = null;
     private Context context;
     DataReceived dataReceived;
 
@@ -60,12 +64,15 @@ public class GetData {
             if (imageData == null) {
                 Log.v(TAG, "No image data: imageData is null");
             }
+            Log.d(TAG, imageData);
             param.put("image", imageData);
-            JSONObject parameters = new JSONObject(param);
+            JSONObject p = new JSONObject(param);
+            JSONArray parameters = new JSONArray();
+            parameters.put(p);
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, serverURL, parameters, new Response.Listener<JSONObject>() {
+            JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.POST, serverURL, parameters, new Response.Listener<JSONArray>() {
                 @Override
-                public void onResponse(JSONObject response) {
+                public void onResponse(JSONArray response) {
                     //convert response object to item object.
                     Toast.makeText(context, response.toString(), Toast.LENGTH_SHORT).show();
                     dataReceived = new Gson().fromJson(new Gson().toJson(response), DataReceived.class);
@@ -143,6 +150,11 @@ public class GetData {
             e.printStackTrace();
         }
         return image;
+    }
+
+    public DataReceived uploadOkHttp() throws IOException {
+        DataReceived dataReceived = null;
+        return dataReceived;
     }
 
 }

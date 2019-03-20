@@ -11,9 +11,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import es.dmoral.toasty.Toasty;
+import zw.co.pricecompareapp.models.DataReceived;
 import zw.co.pricecompareapp.models.Item;
 import zw.co.pricecompareapp.viewmodel.GetData;
+import zw.co.pricecompareapp.viewmodel.OkHttpGetData;
 
 import com.camerakit.CameraKitView;
 
@@ -29,7 +33,7 @@ public class FragmentCamera extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_camera, container, false);
         //isStoragePermissionGranted();
         cameraKitView = (CameraKitView)view.findViewById(R.id.camera);
-        getData = new GetData(getContext());
+        getData = new GetData(getActivity());
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fabCheck);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,19 +85,35 @@ public class FragmentCamera extends Fragment {
                     e.printStackTrace();
                 }
                 if(flag){
-                    Item item = getData.uploaduserimage();
-                    //start new fragment and send serialised object to it
-                    /*
-                    FragmentManager fragmentManager2 = getFragmentManager();
-                    FragmentTransaction ft2 = fragmentManager2.beginTransaction();
-                    FragmentResult frag2 = new FragmentResult();
-                    ft2.addToBackStack("xyz");
-                    ft2.hide(FragmentCamera.this);
-                    ft2.add(R.id.frameMain, frag2 );
-                    ft2.commit();
-                    */
+                    try {
+                        //DataReceived dataReceived = getData.uploaduserimage();
+                        OkHttpGetData okHttpGetData = new OkHttpGetData(getActivity());
+                        DataReceived dataReceived = okHttpGetData.uploadOkHttp();
+                        if (dataReceived == null){
+                            Toasty.error(getActivity(), "Error: Could not process image ", Toast.LENGTH_SHORT, true).show();
+                        }else{
+                            sendObject(dataReceived);
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                 }
             }
         });
+    }
+
+    public void sendObject(DataReceived dt){
+        Bundle bundle=new Bundle();
+        bundle.putSerializable("dataReceived",dt);
+
+        FragmentManager fragmentManager2 = getFragmentManager();
+        FragmentTransaction ft2 = fragmentManager2.beginTransaction();
+        FragmentResult frag2 = new FragmentResult();
+        frag2.setArguments(bundle);
+        ft2.addToBackStack("xyz");
+        ft2.hide(FragmentCamera.this);
+        ft2.add(R.id.frameMain, frag2);
+        ft2.commit();
     }
 }
