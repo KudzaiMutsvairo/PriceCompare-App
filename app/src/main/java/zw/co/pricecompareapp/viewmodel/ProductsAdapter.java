@@ -29,6 +29,7 @@ public class ProductsAdapter extends ArrayAdapter<Item> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.lst_item_result, parent, false);
         }
         // Lookup view for data population
+        TextView tvPname = (TextView) convertView.findViewById(R.id.tvPname);
         TextView tvSName = (TextView) convertView.findViewById(R.id.tvShopName);
         TextView tvSAddr = (TextView) convertView.findViewById(R.id.tvShopAddress);
         TextView tvPrice = (TextView) convertView.findViewById(R.id.tvPrice);
@@ -36,6 +37,7 @@ public class ProductsAdapter extends ArrayAdapter<Item> {
         tvSName.setText(item.getName());
         tvSAddr.setText(item.getAddress());
         tvPrice.setText(item.getPrice());
+        tvPname.setText(item.getDescription());
         // Return the completed view to render on screen
         return convertView;
     }

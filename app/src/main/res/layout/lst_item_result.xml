@@ -5,12 +5,23 @@
     android:padding="5dp">
 
     <TextView
+        android:id="@+id/tvPname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="product name"
+        android:textSize="16sp"
+        android:textColor="#e65100"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <TextView
         android:id="@+id/tvShopName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="shop name"
         android:textSize="16sp"
         android:textColor="#e65100"
+        android:layout_marginTop="3dp"
+        android:layout_below="@+id/tvPname"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <TextView
@@ -18,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvShopName"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         android:text="Shop Address" />
 
     <TextView
@@ -28,7 +39,16 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginTop="3dp"
-        android:text="$0.00"
+        android:text="0.00"
+        android:textColor="#207cca"
+        android:textSize="19sp" />
+    <TextView
+        android:id="@+id/tvDollar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:text="$"
+        android:layout_toLeftOf="@+id/tvPrice"
         android:textColor="#207cca"
         android:textSize="19sp" />
 </RelativeLayout>
