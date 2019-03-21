@@ -218,7 +218,7 @@ public class OkHttpGetData {
                 dataReceived = new Gson().fromJson(mMessage, DataReceived.class);
                 if(dataReceived !=  null) {
                     Log.e(TAG, dataReceived.getDescription());
-                    Log.e(TAG, dataReceived.getError());
+                    //Log.e(TAG, dataReceived.getError());
                 }else {
                     Log.e(TAG, "object is null");
                 }
