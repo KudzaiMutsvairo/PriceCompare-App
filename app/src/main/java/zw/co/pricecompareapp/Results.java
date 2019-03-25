@@ -1,7 +1,10 @@
 package zw.co.pricecompareapp;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,14 +23,36 @@ import zw.co.pricecompareapp.viewmodel.ProductsAdapter;
 
 public class Results extends AppCompatActivity {
     private String TAG =  "pc: ";
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
-        String path = getIntent().getExtras().getString("imagePath");
-        displayImage(path);
-       compute(path);
+        final String path = getIntent().getExtras().getString("imagePath");
+
+        progressDialog = new ProgressDialog(Results.this);
+        progressDialog.setMessage("Loading..."); // Setting Message
+        progressDialog.setTitle("Processing Image"); // Setting Title
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
+        progressDialog.show(); // Display Progress Dialog
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        new CountDownTimer(1000, 500) {
+
+            public void onTick(long millisUntilFinished) {
+                //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                //mTextField.setText("done!");
+                Intent intent = new Intent(Results.this, Start.class);
+                displayImage(path);
+                compute(path);
+                progressDialog.dismiss();
+            }
+        }.start();
+
     }
 
 
@@ -75,5 +100,10 @@ public class Results extends AppCompatActivity {
             Log.d(TAG, "displayImage: File does not exist");
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.finish();
     }
 }

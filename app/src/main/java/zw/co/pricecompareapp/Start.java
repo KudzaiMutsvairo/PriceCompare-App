@@ -1,6 +1,7 @@
 package zw.co.pricecompareapp;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
@@ -39,11 +40,14 @@ public class Start extends AppCompatActivity {
     private ImageView imageview;
     private static final String IMAGE_DIRECTORY = "/pricecompare";
     private int GALLERY = 1, CAMERA = 2;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
+        requestMultiplePermissions();
 
         Button btnCamera =  (Button) findViewById(R.id.btnCapture);
         Button btnGallery = (Button) findViewById(R.id.btnPick);
@@ -76,12 +80,38 @@ public class Start extends AppCompatActivity {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == this.RESULT_CANCELED) {
             return;
         }
+
+        //progress dialog here
+
+        progressDialog = new ProgressDialog(Start.this);
+        progressDialog.setMessage("Loading..."); // Setting Message
+        progressDialog.setTitle("ProgressDialog"); // Setting Title
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
+        progressDialog.show(); // Display Progress Dialog
+        progressDialog.setCancelable(false);
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    processReturnCode(requestCode, resultCode, data);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                progressDialog.dismiss();
+            }
+        }).start();
+        ///ends here
+
+
+
+    }
+
+    public void processReturnCode(int requestCode, int resultCode, Intent data){
         if (requestCode == GALLERY) {
             if (data != null) {
                 Uri contentURI = data.getData();
@@ -89,13 +119,13 @@ public class Start extends AppCompatActivity {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                     //Image is being transfered to folder here
                     String path = saveImage(bitmap);
-                    Toast.makeText(Start.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(Start.this, "Image Saved!", Toast.LENGTH_SHORT).show();
                     //imageview.setImageBitmap(bitmap);
                     //send the request to process the image here
                     startResult(path);
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Toast.makeText(Start.this, "Failed!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(Start.this, "Failed!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -104,7 +134,7 @@ public class Start extends AppCompatActivity {
             //imageview.setImageBitmap(thumbnail);
             String path = saveImage(thumbnail);
             startResult(path);
-            Toast.makeText(Start.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(Start.this, "Image Saved!", Toast.LENGTH_SHORT).show();
             //send request here
         }
     }
@@ -177,5 +207,10 @@ public class Start extends AppCompatActivity {
         Intent intent =  new Intent(this, Results.class);
         intent.putExtra("imagePath", imagePath);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.finish();
     }
 }

@@ -21,6 +21,7 @@ public class Splash extends AppCompatActivity {
                 //mTextField.setText("done!");
                 Intent intent = new Intent(Splash.this, Start.class);
                 startActivity(intent);
+                finish();
             }
         }.start();
 
