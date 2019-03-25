@@ -20,14 +20,14 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/mug"/>
+        app:srcCompat="@drawable/noimage"/>
 
     <TextView
         android:id="@+id/tvProduct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="White coffee mug"
+        android:text="No results"
         android:textSize="15sp"
         />
 
