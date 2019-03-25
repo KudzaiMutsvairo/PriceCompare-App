@@ -49,6 +49,9 @@ public class Results extends AppCompatActivity {
                 if (prices != null) {
                     lst.setAdapter(adapter);
                 }
+                if (dtr.getError() != null){
+                    Toast.makeText(this, dtr.getError(), Toast.LENGTH_SHORT).show();
+                }
             }else{
                 Toast.makeText(this, "No data returned from server", Toast.LENGTH_SHORT).show();
             }

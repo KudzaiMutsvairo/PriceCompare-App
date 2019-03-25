@@ -3,4 +3,5 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="app_description">Get prices of tableware products by simply taking or uploading a picture of your desired product</string>
 </resources>
