@@ -20,14 +20,14 @@
         app:layout_constraintTop_toTopOf="parent"
         android:gravity="center">
         <ImageView
-            android:layout_width="200dp"
+            android:layout_width="120dp"
             android:layout_height="200dp"
             android:src="@drawable/thethosplash"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="32sp"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorAccent"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
             android:text="Price Compare"/>
         <TextView
@@ -36,6 +36,6 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textSize="15sp"
-            android:text="@string/app_description"/>
+            android:text="@string/app_welcome"/>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

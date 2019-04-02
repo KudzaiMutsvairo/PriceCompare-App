@@ -4,4 +4,5 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="app_description">Get prices of tableware products by simply taking or uploading a picture of your desired product</string>
+    <string name="app_welcome">Welcome to Price Compare app, discover products by simply using their images</string>
 </resources>
