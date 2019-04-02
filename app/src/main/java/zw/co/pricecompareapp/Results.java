@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.CountDownTimer;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -16,6 +16,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import zw.co.pricecompareapp.models.DataReceived;
 import zw.co.pricecompareapp.models.Item;
 import zw.co.pricecompareapp.viewmodel.OkHttpGetData;
@@ -24,6 +25,7 @@ import zw.co.pricecompareapp.viewmodel.ProductsAdapter;
 public class Results extends AppCompatActivity {
     private String TAG =  "pc: ";
     ProgressDialog progressDialog;
+    CircleImageView circleImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +94,9 @@ public class Results extends AppCompatActivity {
 
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath()); //this is the bitmap for the image
 
-            ImageView myImage = (ImageView) findViewById(R.id.ivProductI);//your image view in the recycler view
-
-            myImage.setImageBitmap(myBitmap);//image set to the image view
+            //ImageView myImage = (ImageView) findViewById(R.id.ivProductI);//your image view in the recycler view
+            circleImageView = (CircleImageView)findViewById(R.id.ivProductI);
+            circleImageView.setImageBitmap(myBitmap);//image set to the image view
 
         }else {
             Log.d(TAG, "displayImage: File does not exist");

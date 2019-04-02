@@ -10,28 +10,49 @@
     android:layout_marginEnd="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginBottom="?android:attr/actionBarSize">
-    <ImageView
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Results"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title" />
+
+    <View
+        android:layout_marginTop="5dp"
+        android:id="@+id/divider4"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ivProductI"
-        android:layout_width="307dp"
-        android:layout_height="173dp"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/noimage"/>
+        android:src="@drawable/noimage"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/colorAccent"/>
 
     <TextView
         android:id="@+id/tvProduct"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
         android:text="No results"
-        android:textSize="15sp"
+        android:textSize="20sp"
         />
 
     <View
+        android:layout_marginTop="5dp"
         android:id="@+id/divider3"
         android:layout_width="match_parent"
         android:layout_height="1dp"
