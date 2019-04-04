@@ -34,16 +34,14 @@
             android:id="@+id/ivLogo"
             android:layout_width="100dp"
             android:layout_height="120dp"
-            android:layout_marginTop="200dp"
+            android:layout_above="@id/tvAppName"
             android:src="@drawable/thethosplash"
-            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"/>
         <TextView
             android:id="@+id/tvAppName"
-            android:layout_below="@+id/ivLogo"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
@@ -51,26 +49,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="32sp"
+            android:layout_marginTop="45dp"
+            android:layout_above="@+id/tvTagLine"
             android:textAlignment="center"
             android:textColor="@color/colorAccent"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
             android:text="Price Compare"/>
+
         <TextView
             android:id="@+id/tvTagLine"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/tvAppName"
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/btnCapture"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="@string/app_description"
             android:textAlignment="center"
-            android:textSize="18sp"
             android:textColor="@color/colorAccent"
-            android:text="@string/app_description"/>
+            android:textSize="18sp"
+            android:layout_marginTop="20dp"/>
 
         <Button
+            android:layout_marginTop="35dp"
             android:id="@+id/btnCapture"
             android:layout_width="210dp"
             android:layout_height="wrap_content"
